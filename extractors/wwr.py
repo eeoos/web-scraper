@@ -39,4 +39,4 @@ def extract_wwr_jobs(keyword):
         }
         results.append(job_data)
         # new job 데이터를 append 함수로 job_data에 추가 할당
-    return results
+  return results
