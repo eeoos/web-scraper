@@ -31,9 +31,9 @@ def extract_wwr_jobs(keyword):
         # find: 기준에 맞는 첫번째 하나의 항목만 줌
         job_data = {
           'link': f"https://weworkremotely.com{link}",
-          'company' :company.string,
-          'location': region.string,
-          'position' : title.string
+          'company' :company.string.replace(",", " "),
+          'location': region.string.replace(",", " "),
+          'position' : title.string.replace(",", " ")
           #.string을 사용하지 않으면 <span class="title">title here</span>과 같이 출력되어짐
           #.string: 태그 안에 있는 텍스트를 줌 title here
         }

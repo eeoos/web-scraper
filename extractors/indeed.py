@@ -1,7 +1,7 @@
 from requests import get # requests package download
 from bs4 import BeautifulSoup # BeautifulSoup package download
 # bs4는 html tag들을 list, dictiionary와 같은 자료구조로 변환
-from extractors.wwr import extract_wwr_jobs
+
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
@@ -22,13 +22,15 @@ indeed는 request를 사용하면 403을 반환하기 때문에 브라우저를 
 
 """
 
-
 def get_page_count(keyword):
 
+    
     options = Options()
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
-    browser = webdriver.Chrome(options=options) # 위의 주석을 넣는다면 인수에 options=options 삽입
+    options.add_experimental_option("detach", True)
+
+    browser = webdriver.Chrome(options=options) 
 
     base_url="https://kr.indeed.com/jobs?q="
     browser.get(f"{base_url}{keyword}")
@@ -48,19 +50,21 @@ def get_page_count(keyword):
 def extract_indeed_jobs(keyword):
 
     
+    options = Options()
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_experimental_option("detach", True)
+
+    browser = webdriver.Chrome(options=options)
+    
     pages = get_page_count(keyword)
     
 
-    print("Found", pages, "pages")
+    print("Found", pages, "pages (indeed)")
     results = []
 
     for page in range(pages):    
-        options = Options()
-        options.add_argument("--no-sandbox")
-        options.add_argument("--disable-dev-shm-usage")
-
-        browser = webdriver.Chrome(options = options)
-      
+  
         base_url="https://kr.indeed.com/jobs"
         final_url= f"{base_url}?q={keyword}&start={page*10}"
         browser.get(final_url)
@@ -85,15 +89,16 @@ def extract_indeed_jobs(keyword):
                 location = job.find("div", class_="companyLocation")
                 job_data = {
                     'link':f"https://kr.indeed.com{link}",
-                    'company':company.string,
-                    'location':location.string,
-                    'position':title
+                    'company':company.string.replace(",", " "),
+                    'location':location.string.replace(",", " "),
+                    'position':title.replace(",", " "),
                 }
 
                 results.append(job_data)
     return results  
 
-
+    while True:
+        pass
 
 
 
