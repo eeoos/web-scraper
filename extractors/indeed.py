@@ -91,6 +91,7 @@ def get_all_page_count(keyword):
 
         if exist_page:
             if not pages:
+                
                 return count            
         if not pages:
             print(f"not pages: {count}")
