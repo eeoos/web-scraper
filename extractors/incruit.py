@@ -66,6 +66,7 @@ def extract_incruit_jobs(keyword):
 
                     if link == "#":
                         link = "None"
+                    # 왜 #가 뜨는지 알아보기
 
                     job_data = {
                                 'link': f"{link}",
